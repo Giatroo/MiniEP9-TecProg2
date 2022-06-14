@@ -35,6 +35,25 @@ class TestFundaments(unittest.TestCase):
             "https://www.fundamentus.com.br/fii_buscaavancada.php",
         )
 
+    def test_search(self):
+        """Tests if the search bar on the main page redirects the user to the
+        page.
+        """
+        ticker = "PETR4"
+
+        search_bar = self.driver.find_element(
+            by="xpath", value='//*[@id="completar"]'
+        )
+        search_bar.send_keys(ticker)
+        search_bar.submit()
+
+        page_ticker = self.driver.find_element(
+            by="xpath", value="/html/body/div[1]/div[1]/div[2]/p/strong"
+        )
+
+        self.assertEqual(True, ticker in self.driver.title)
+        self.assertEqual(page_ticker.text, ticker)
+
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
